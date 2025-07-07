@@ -1,17 +1,18 @@
-import './index.css'
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Sidebar } from './components/Sidebar';
+import { AppRoutes } from './routes/AppRoutes';
+import './index.css';
 
 function App() {
-
   return (
-    <>
-    <div className='flex h-screen items-center justify-center'>
-
-        <p className="justify-center text-center text-3xl font-bold text-blue-500">
-          Hola Mundo
-        </p>
-    </div>
-    </>
-  )
+    <Router>
+      <div className="flex h-screen bg-gray-100">
+        <Sidebar />
+        <div className="flex-1 overflow-y-auto w-full">
+          <AppRoutes />
+        </div>
+      </div>
+    </Router>
+  );
 }
-
-export default App
+export default App;
