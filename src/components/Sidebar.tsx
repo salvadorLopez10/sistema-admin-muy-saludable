@@ -223,7 +223,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     className={`w-10 h-10 rounded cursor-pointer block float-left mr-2 duration-500 ${open && "rotate-[360deg]"}`} 
                 />
                 <h1 
-                    className={`text-white origin-left font-medium text-xl duration-200 ${!open && "scale-0"}`}
+                    className={`text-white font-avenir-bold origin-left font-medium text-xl duration-200 ${!open && "scale-0"}`}
                 >
                     {title}
                 </h1>
