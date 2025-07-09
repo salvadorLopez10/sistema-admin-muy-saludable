@@ -8,6 +8,8 @@ import { NotFoundPage } from '../pages/NotFoundPage';
 
 // Páginas específicas
 import RecomendacionesPage from '../pages/marketing-suite/nutricion/RecomendacionesPage';
+import CarruselPage from '../pages/marketing-suite/nutricion/CarruselPage';
+
 
 export const AppRoutes = () => {
   const flatRoutes = getFlatRoutes(menuConfig);
@@ -22,10 +24,18 @@ export const AppRoutes = () => {
         path="/marketing-suite/nutricion/recomendaciones" 
         element={<RecomendacionesPage />} 
       />
+
+      <Route 
+        path="/marketing-suite/nutricion/carrusel" 
+        element={<CarruselPage />} 
+      />
       
       {/* Rutas dinámicas basadas en la configuración del menú */}
       {flatRoutes
-        .filter(route => route.path !== '/marketing-suite/nutricion/recomendaciones')
+        .filter(route =>
+            route.path !== '/marketing-suite/nutricion/recomendaciones' &&
+            route.path !== '/marketing-suite/nutricion/carrusel'
+        )
         .map((route) => (
           <Route
             key={route.id}

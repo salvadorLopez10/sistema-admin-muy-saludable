@@ -212,8 +212,8 @@ const RecomendacionesPage: React.FC = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="bg-orange-100 p-3 rounded-lg">
-              <MdRestaurant className="text-orange-600 text-2xl" />
+            <div className="bg-yellow-ms p-3 rounded-lg">
+              <MdRestaurant className="text-orange-ms text-2xl" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
@@ -227,7 +227,7 @@ const RecomendacionesPage: React.FC = () => {
           
           {/* Breadcrumb */}
           <nav className="text-sm text-gray-500">
-            <span>Marketing Suite</span> / <span>Nutrición</span> / <span className="text-orange-600 font-medium">Recomendaciones</span>
+            <span>Marketing Suite</span> / <span>Nutrición</span> / <span className="text-orange-ms font-medium">Recomendaciones</span>
           </nav>
         </div>
 
