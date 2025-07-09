@@ -1,4 +1,4 @@
-// src/pages/marketing-suite/nutricion/CarruselPage.tsx
+// src/pages/marketing-suite/rutinas-ejercicio/CarruselRutinasPage.tsx
 import React, { useState } from 'react';
 import { MdSave, MdViewCarousel, MdCancel } from 'react-icons/md';
 import { MultiImageDropzone } from '../../../components/MultiImageDropzone';
@@ -21,7 +21,7 @@ interface UploadFilesResponse {
   totalFiles: number;
 }
 
-interface CarruselPayload {
+interface CarruselRutinasPayload {
   titulo: string;
   image_url: string;
   tipo: string;
@@ -30,7 +30,7 @@ interface CarruselPayload {
   vigente_fecha_fin: string;
 }
 
-const CarruselPage: React.FC = () => {
+const CarruselRutinasPage: React.FC = () => {
   // Estados del formulario
   const [titulo, setTitulo] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
@@ -61,7 +61,7 @@ const CarruselPage: React.FC = () => {
         formData.append('files', file);
       });
 
-      console.log('Subiendo', imagenesFiles.length, 'imágenes del carrusel...');
+      console.log('Subiendo', imagenesFiles.length, 'imágenes del carrusel de rutinas...');
 
       const apiInstance = MuySaludableApi();
       const response = await apiInstance.post<UploadFilesResponse>('/uploadFiles', formData, {
@@ -71,32 +71,32 @@ const CarruselPage: React.FC = () => {
       });
 
       if (response.data.success) {
-        console.log('Imágenes del carrusel subidas exitosamente:', response.data.files);
+        console.log('Imágenes del carrusel de rutinas subidas exitosamente:', response.data.files);
         return response.data.files;
       } else {
         throw new Error(response.data.message || 'Error al subir las imágenes');
       }
     } catch (error) {
-      console.error('Error subiendo imágenes del carrusel:', error);
+      console.error('Error subiendo imágenes del carrusel de rutinas:', error);
       throw new Error('Error al subir las imágenes al servidor');
     }
   };
 
-  // Guardar carrusel en la base de datos
-  const guardarCarruselDB = async (carruselPayloads: CarruselPayload[]): Promise<unknown> => {
+  // Guardar carrusel de rutinas en la base de datos
+  const guardarCarruselDB = async (carruselPayloads: CarruselRutinasPayload[]): Promise<unknown> => {
     try {
-      console.log('Guardando carrusel en DB:', carruselPayloads);
+      console.log('Guardando carrusel de rutinas en DB:', carruselPayloads);
 
       const apiInstance = MuySaludableApi();
       
       // Enviar todas las imágenes en una sola petición al endpoint bulk
       const response = await apiInstance.post('/carousel/createBulk', carruselPayloads);
       
-      console.log('Carrusel guardado exitosamente:', response.data);
+      console.log('Carrusel de rutinas guardado exitosamente:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error guardando carrusel:', error);
-      throw new Error('Error al guardar el carrusel en la base de datos');
+      console.error('Error guardando carrusel de rutinas:', error);
+      throw new Error('Error al guardar el carrusel de rutinas en la base de datos');
     }
   };
 
@@ -111,7 +111,7 @@ const CarruselPage: React.FC = () => {
 
     try {
       // Paso 1: Subir todas las imágenes
-      console.log(`Iniciando proceso de guardado del carrusel con ${selectedImages.length} imagen(es)`);
+      console.log(`Iniciando proceso de guardado del carrusel de rutinas con ${selectedImages.length} imagen(es)`);
       const imagenesSubidas = await subirImagenes(selectedImages);
 
       if (imagenesSubidas.length !== selectedImages.length) {
@@ -119,10 +119,10 @@ const CarruselPage: React.FC = () => {
       }
 
       // Paso 2: Crear payload para cada imagen
-      const carruselPayloads: CarruselPayload[] = imagenesSubidas.map((imagen) => ({
+      const carruselPayloads: CarruselRutinasPayload[] = imagenesSubidas.map((imagen) => ({
         titulo: titulo.trim(),
         image_url: imagen.publicUrl,
-        tipo: "Plan",
+        tipo: "Rutinas",
         activo: "1",
         vigente_fecha_inicio: startDate,
         vigente_fecha_fin: endDate
@@ -132,7 +132,7 @@ const CarruselPage: React.FC = () => {
       await guardarCarruselDB(carruselPayloads);
 
       // Paso 4: Mostrar éxito y limpiar formulario
-      alert(`¡Éxito! Se guardó el carrusel "${titulo}" con ${selectedImages.length} imagen(es) correctamente.`);
+      alert(`¡Éxito! Se guardó el carrusel de rutinas "${titulo}" con ${selectedImages.length} imagen(es) correctamente.`);
       
       // Resetear formulario
       setTitulo('');
@@ -141,8 +141,8 @@ const CarruselPage: React.FC = () => {
       setSelectedImages([]);
 
     } catch (error) {
-      console.error('Error en el proceso de guardado del carrusel:', error);
-      const errorMessage = error instanceof Error ? error.message : 'No se pudo guardar el carrusel';
+      console.error('Error en el proceso de guardado del carrusel de rutinas:', error);
+      const errorMessage = error instanceof Error ? error.message : 'No se pudo guardar el carrusel de rutinas';
       alert(`Error: ${errorMessage}`);
     } finally {
       setIsLoading(false);
@@ -170,17 +170,17 @@ const CarruselPage: React.FC = () => {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Carrusel Nutricional
+                Carrusel de Rutinas de Ejercicio
               </h1>
               <p className="text-gray-600 mt-1">
-                Configura el carrusel de imágenes con fechas de vigencia
+                Configura el carrusel de imágenes de rutinas con fechas de vigencia
               </p>
             </div>
           </div>
           
           {/* Breadcrumb */}
           <nav className="text-sm text-gray-500">
-            <span>Marketing Suite</span> / <span>Nutrición</span> / <span className="text-orange-ms font-medium">Carrusel</span>
+            <span>Marketing Suite</span> / <span>Rutinas de Ejercicio</span> / <span className="text-orange-ms font-medium">Carrusel</span>
           </nav>
         </div>
 
@@ -191,27 +191,27 @@ const CarruselPage: React.FC = () => {
             {/* Sección de Título */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Información del Carrusel
+                Información del Carrusel de Rutinas
               </h2>
               <div className="space-y-2">
                 <label 
-                  htmlFor="titulo-carrusel"
+                  htmlFor="titulo-carrusel-rutinas"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Título del Carrusel *
                 </label>
                 <input
-                  id="titulo-carrusel"
+                  id="titulo-carrusel-rutinas"
                   type="text"
                   value={titulo}
                   onChange={(e) => setTitulo(e.target.value)}
-                  placeholder="Ej: Carrusel de Planes Nutricionales Enero 2025"
+                  placeholder="Ej: Carrusel de Rutinas de Ejercicio Enero 2025"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
                   required
                   maxLength={100}
                 />
                 <p className="text-xs text-gray-500">
-                  Este título te ayudará a identificar el carrusel en el panel de administración
+                  Este título te ayudará a identificar el carrusel de rutinas en el panel de administración
                 </p>
               </div>
             </div>
@@ -228,7 +228,7 @@ const CarruselPage: React.FC = () => {
             {/* Sección de Imágenes */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Imágenes del Carrusel
+                Imágenes del Carrusel de Rutinas
               </h2>
               <MultiImageDropzone
                 onImagesChange={setSelectedImages}
@@ -264,7 +264,7 @@ const CarruselPage: React.FC = () => {
         {/* Resumen del carrusel */}
         {titulo && selectedImages.length > 0 && startDate && endDate && (
           <div className="mt-8 bg-yellow-ms border border-orange-ms rounded-lg p-6">
-            <h3 className="font-medium text-brown-ms mb-3">📋 Resumen del Carrusel:</h3>
+            <h3 className="font-medium text-brown-ms mb-3">📋 Resumen del Carrusel de Rutinas:</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-brown-ms">
               <div>
                 <span className="font-medium">Título:</span> {titulo}
@@ -279,7 +279,7 @@ const CarruselPage: React.FC = () => {
                 <span className="font-medium">Fecha fin:</span> {new Date(endDate).toLocaleDateString('es-ES')}
               </div>
               <div className="md:col-span-2">
-                <span className="font-medium">Tipo:</span> <span className="bg-green-100 text-green-ms px-2 py-1 rounded text-xs">Plan</span>
+                <span className="font-medium">Tipo:</span> <span className="bg-green-100 text-green-ms px-2 py-1 rounded text-xs">Rutinas</span>
               </div>
             </div>
           </div>
@@ -299,4 +299,4 @@ const CarruselPage: React.FC = () => {
   );
 };
 
-export default CarruselPage;
+export default CarruselRutinasPage;

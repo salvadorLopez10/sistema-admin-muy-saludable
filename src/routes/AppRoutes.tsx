@@ -9,6 +9,7 @@ import { NotFoundPage } from '../pages/NotFoundPage';
 // Páginas específicas
 import RecomendacionesPage from '../pages/marketing-suite/nutricion/RecomendacionesPage';
 import CarruselPage from '../pages/marketing-suite/nutricion/CarruselPage';
+import CarruselRutinasPage from '../pages/marketing-suite/rutinas-ejercicio/CarruselRutinasPage';
 
 
 export const AppRoutes = () => {
@@ -28,6 +29,11 @@ export const AppRoutes = () => {
       <Route 
         path="/marketing-suite/nutricion/carrusel" 
         element={<CarruselPage />} 
+      />
+
+      <Route 
+        path="/marketing-suite/rutinas-ejercicio/carrusel" 
+        element={<CarruselRutinasPage />} 
       />
       
       {/* Rutas dinámicas basadas en la configuración del menú */}
