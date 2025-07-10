@@ -10,6 +10,8 @@ import { NotFoundPage } from '../pages/NotFoundPage';
 import RecomendacionesPage from '../pages/marketing-suite/nutricion/RecomendacionesPage';
 import CarruselPage from '../pages/marketing-suite/nutricion/CarruselPage';
 import CarruselRutinasPage from '../pages/marketing-suite/rutinas-ejercicio/CarruselRutinasPage';
+import SaludFinancieraPage from '../pages/marketing-suite/SaludFinancieraPage';
+
 
 
 export const AppRoutes = () => {
@@ -35,12 +37,19 @@ export const AppRoutes = () => {
         path="/marketing-suite/rutinas-ejercicio/carrusel" 
         element={<CarruselRutinasPage />} 
       />
+
+      <Route 
+        path="/marketing-suite/salud-financiera" 
+        element={<SaludFinancieraPage />} 
+      />
       
       {/* Rutas dinámicas basadas en la configuración del menú */}
       {flatRoutes
         .filter(route =>
             route.path !== '/marketing-suite/nutricion/recomendaciones' &&
-            route.path !== '/marketing-suite/nutricion/carrusel'
+            route.path !== '/marketing-suite/nutricion/carrusel' &&
+            route.path !== '/marketing-suite/rutinas-ejercicio/carrusel' &&
+            route.path !== '/marketing-suite/salud-financiera'
         )
         .map((route) => (
           <Route
