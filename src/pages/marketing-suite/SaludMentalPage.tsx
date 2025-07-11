@@ -1,7 +1,7 @@
 // src/pages/marketing-suite/SaludFinancieraPage.tsx
 import React, { useState } from 'react';
-import { MdAdd, MdSave, MdAccountBalance, MdCancel } from 'react-icons/md';
-import { SaludFinancieraSection, SaludFinancieraData } from '../../components/SaludFinancieraSection';
+import { MdAdd, MdSave, MdPsychology, MdCancel } from 'react-icons/md';
+import { SaludMentalSection, SaludMentalData } from '../../components/SaludMentalSection';
 import { DateRangePicker } from '../../components/DateRangePicker';
 import { MuySaludableApi } from '../../api/MuySaludableApi';
 
@@ -21,14 +21,14 @@ interface UploadFilesResponse {
   totalFiles: number;
 }
 
-interface SaludFinancieraPayload {
+interface SaludMentalPayload {
   nombre: string;
   contenido: string;
   vigente_fecha_inicio: string;
   vigente_fecha_fin: string;
 }
 
-const SaludFinancieraPage: React.FC = () => {
+const SaludMentalPage: React.FC = () => {
   // Función para generar ID único compatible
   const generateId = () => {
     return 'sf_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
@@ -37,7 +37,7 @@ const SaludFinancieraPage: React.FC = () => {
   // Estados del formulario
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-  const [contenidos, setContenidos] = useState<SaludFinancieraData[]>([
+  const [contenidos, setContenidos] = useState<SaludMentalData[]>([
     {
       id: generateId(),
       titulo: '',
@@ -49,7 +49,7 @@ const SaludFinancieraPage: React.FC = () => {
 
   // Agregar nueva sección
   const agregarSeccion = () => {
-    const nuevaSeccion: SaludFinancieraData = {
+    const nuevaSeccion: SaludMentalData = {
       id: generateId(),
       titulo: '',
       contenido: '',
@@ -59,7 +59,7 @@ const SaludFinancieraPage: React.FC = () => {
   };
 
   // Actualizar datos de una sección
-  const actualizarSeccion = (id: string, field: keyof SaludFinancieraData, value: string | File | null) => {
+  const actualizarSeccion = (id: string, field: keyof SaludMentalData, value: string | File | null) => {
     setContenidos(prev =>
       prev.map(seccion =>
         seccion.id === id ? { ...seccion, [field]: value } : seccion
@@ -98,7 +98,7 @@ const SaludFinancieraPage: React.FC = () => {
         formData.append('files', file);
       });
 
-      console.log('Subiendo', imagenesFiles.length, 'imágenes de salud financiera...');
+      console.log('Subiendo', imagenesFiles.length, 'imágenes de salud mental...');
 
       const apiInstance = MuySaludableApi();
       const response = await apiInstance.post<UploadFilesResponse>('/uploadFiles', formData, {
@@ -108,7 +108,7 @@ const SaludFinancieraPage: React.FC = () => {
       });
 
       if (response.data.success) {
-        console.log('Imágenes de salud financiera subidas exitosamente:', response.data.files);
+        console.log('Imágenes de salud mental subidas exitosamente:', response.data.files);
         return response.data.files;
       } else {
         throw new Error(response.data.message || 'Error al subir las imágenes');
@@ -120,7 +120,7 @@ const SaludFinancieraPage: React.FC = () => {
   };
 
   // Construir contenido con formato específico
-  const construirContenido = (contenidos: SaludFinancieraData[], imagenesSubidas: UploadedFile[]): string => {
+  const construirContenido = (contenidos: SaludMentalData[], imagenesSubidas: UploadedFile[]): string => {
     let contenidoCompleto = '';
     let indiceImagen = 0;
 
@@ -144,9 +144,9 @@ const SaludFinancieraPage: React.FC = () => {
   };
 
   // Guardar en la base de datos
-  const guardarSaludFinancieraDB = async (payload: SaludFinancieraPayload): Promise<unknown> => {
+  const guardarSaludMentalDB = async (payload: SaludMentalPayload): Promise<unknown> => {
     try {
-      console.log('Guardando salud financiera en DB:', payload);
+      console.log('Guardando salud mental en DB:', payload);
 
       const apiInstance = MuySaludableApi();
       const response = await apiInstance.post('/salud', payload);
@@ -160,7 +160,7 @@ const SaludFinancieraPage: React.FC = () => {
   };
 
   // Función principal para guardar
-  const guardarSaludFinanciera = async () => {
+  const guardarSaludMental = async () => {
     if (!esFormularioValido()) {
       alert('Por favor completa todos los campos obligatorios y verifica las fechas');
       return;
@@ -187,15 +187,15 @@ const SaludFinancieraPage: React.FC = () => {
       const contenidoFormateado = construirContenido(contenidos, imagenesSubidas);
 
       // Paso 4: Preparar payload
-      const payload: SaludFinancieraPayload = {
-        nombre: "Financiera",
+      const payload: SaludMentalPayload = {
+        nombre: "Mental",
         contenido: contenidoFormateado,
         vigente_fecha_inicio: startDate,
         vigente_fecha_fin: endDate
       };
 
       // Paso 5: Guardar en la base de datos
-      await guardarSaludFinancieraDB(payload);
+      await guardarSaludMentalDB(payload);
 
       // Paso 6: Mostrar éxito y limpiar formulario
       alert(`¡Éxito! Se guardó la información de salud financiera con ${contenidos.length} contenido(s) correctamente.`);
@@ -240,26 +240,26 @@ const SaludFinancieraPage: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="bg-yellow-ms p-3 rounded-lg">
-              <MdAccountBalance className="text-orange-ms text-2xl" />
+              <MdPsychology className="text-orange-ms text-2xl" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Salud Financiera
+                Salud Mental
               </h1>
               <p className="text-gray-600 mt-1">
-                Gestiona contenido educativo sobre finanzas personales
+                Gestiona contenido educativo sobre salud mental para tus usuarios.
               </p>
             </div>
           </div>
           
           {/* Breadcrumb */}
           <nav className="text-sm text-gray-500">
-            <span>Marketing Suite</span> / <span className="text-orange-ms font-medium">Salud Financiera</span>
+            <span>Marketing Suite</span> / <span className="text-orange-ms font-medium">Salud Mental</span>
           </nav>
         </div>
 
         {/* Formulario */}
-        <form onSubmit={(e) => { e.preventDefault(); guardarSaludFinanciera(); }}>
+        <form onSubmit={(e) => { e.preventDefault(); guardarSaludMental(); }}>
           <div className="space-y-8">
             
             {/* Sección de Fechas */}
@@ -274,7 +274,7 @@ const SaludFinancieraPage: React.FC = () => {
             {/* Secciones de contenido */}
             <div className="space-y-6">
               {contenidos.map((seccion, index) => (
-                <SaludFinancieraSection
+                <SaludMentalSection
                   key={seccion.id}
                   data={seccion}
                   index={index}
@@ -366,4 +366,4 @@ const SaludFinancieraPage: React.FC = () => {
   );
 };
 
-export default SaludFinancieraPage;
+export default SaludMentalPage;

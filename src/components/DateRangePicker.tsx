@@ -43,7 +43,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
               Rango de Fechas de Vigencia
             </h3>
             <p className="text-gray-600 text-sm">
-              Define cuándo será visible el carrusel
+              Define el rango de cuándo será visible el contenido
             </p>
           </div>
         </div>
@@ -70,7 +70,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
               />
             </div>
             <p className="text-xs text-gray-500">
-              El carrusel comenzará a mostrarse desde esta fecha
+              El contenido comenzará a mostrarse desde esta fecha
             </p>
           </div>
 
@@ -95,19 +95,19 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
               />
             </div>
             <p className="text-xs text-gray-500">
-              El carrusel dejará de mostrarse después de esta fecha
+              El contenido dejará de mostrarse después de esta fecha
             </p>
           </div>
         </div>
 
         {/* Información del rango seleccionado */}
         {startDate && endDate && (
-          <div className="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+          <div className="mt-4 p-3 bg-yellow-50 border border-orange-ms rounded-lg">
             <div className="flex items-center justify-between text-sm">
-              <span className="font-medium text-orange-900">
-                Duración del carrusel:
+              <span className="font-medium text-brown-ms">
+                Duración del rango:
               </span>
-              <span className="text-orange-700">
+              <span className="text-orange-ms">
                 {(() => {
                   const start = new Date(startDate);
                   const end = new Date(endDate);
@@ -117,7 +117,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
                 })()}
               </span>
             </div>
-            <div className="text-xs text-orange-600 mt-1">
+            <div className="text-xs text-orange-ms mt-1">
               Desde {new Date(startDate).toLocaleDateString('es-ES', { 
                 weekday: 'long', 
                 year: 'numeric', 
