@@ -101,7 +101,7 @@ const RutinasVideosPage: React.FC = () => {
       console.log('Guardando rutina de video en DB:', payload);
 
       const apiInstance = MuySaludableApi();
-      const response = await apiInstance.post('/rutinas', payload);
+      const response = await apiInstance.post('/rutinas/reemplazaActivosPorTitulo', payload);
 
       console.log('Rutina de video guardada exitosamente:', response.data);
       return response.data;
