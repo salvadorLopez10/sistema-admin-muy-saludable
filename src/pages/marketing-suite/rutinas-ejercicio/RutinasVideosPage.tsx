@@ -140,7 +140,7 @@ const RutinasVideosPage: React.FC = () => {
       // Paso 2: Preparar payload
       const payload: RutinaVideoPayload = {
         titulo: titulo.trim(),
-        dias: diasSeleccionados.join(','),
+        dias: diasSeleccionados.join(', '),
         descripcion: descripcion.trim(),
         video_url: videoUrl,
         image_url: null,
