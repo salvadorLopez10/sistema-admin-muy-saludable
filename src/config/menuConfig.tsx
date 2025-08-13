@@ -52,6 +52,13 @@ export const menuConfig: MenuItem[] = [
     level: 1,
     submenuItems: [
       {
+        id: 'planes-alimenticios',
+        title: 'Planes Alimenticios',
+        icon: <MdRestaurant />,
+        path: '/marketing-suite/planes-alimenticios',
+        level: 2
+      },
+      {
         id: 'nutricion',
         title: 'Nutrición',
         icon: <MdRestaurant />,

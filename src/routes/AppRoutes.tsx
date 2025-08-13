@@ -13,6 +13,7 @@ import CarruselRutinasPage from '../pages/marketing-suite/rutinas-ejercicio/Carr
 import RutinasVideosPage from '../pages/marketing-suite/rutinas-ejercicio/RutinasVideosPage';
 import SaludFinancieraPage from '../pages/marketing-suite/SaludFinancieraPage';
 import SaludMentalPage from '../pages/marketing-suite/SaludMentalPage';
+import PlanesAlimenticiosPage from '../pages/marketing-suite/PlanesAlimenticiosPage';
 
 
 
@@ -24,7 +25,11 @@ export const AppRoutes = () => {
       {/* Ruta por defecto */}
       <Route path="/" element={<Navigate to="/inicio" replace />} />
       
-      {/* Ruta específica para Recomendaciones */}
+      <Route 
+        path="/marketing-suite/planes-alimenticios" 
+        element={<PlanesAlimenticiosPage />} 
+      />
+
       <Route 
         path="/marketing-suite/nutricion/recomendaciones" 
         element={<RecomendacionesPage />} 
@@ -58,6 +63,7 @@ export const AppRoutes = () => {
       {/* Rutas dinámicas basadas en la configuración del menú */}
       {flatRoutes
         .filter(route =>
+            route.path !== '/marketing-suite/planes-alimenticios' &&
             route.path !== '/marketing-suite/nutricion/recomendaciones' &&
             route.path !== '/marketing-suite/nutricion/carrusel' &&
             route.path !== '/marketing-suite/rutinas-ejercicio/carrusel' &&
