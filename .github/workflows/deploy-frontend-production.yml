@@ -32,8 +32,10 @@ jobs:
         server: ${{ secrets.GODADDY_FTP_HOST }}
         username: ${{ secrets.GODADDY_FTP_USERNAME }}
         password: ${{ secrets.GODADDY_FTP_PASSWORD }}
+        protocol: ftps  # FTP explícito sobre TLS
+        port: 21
         local-dir: ./dist/
-        server-dir: /public_html/muysaludable.com.mx/deploy_github/sistema_admin/
+        server-dir: /public_html/sistema_admin/  # Ruta directa
         dangerous-clean-slate: true
         exclude: |
           **/.git*
@@ -42,4 +44,6 @@ jobs:
           .htaccess
         
     - name: Deployment Success
-      run: echo "🎉 Production deployed to https://tudominio.com/sistema_admin"
+      run: |
+        echo "🎉 Production deployed successfully!"
+        echo "URL: https://muysaludable.com.mx/sistema_admin"
