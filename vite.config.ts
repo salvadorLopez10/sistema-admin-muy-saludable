@@ -5,7 +5,9 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   // Determinar la ruta base según el ambiente
-  const basePath = mode === 'production' ? '/sistema_admin/' : '/sistema_admin_qa/'
+  const basePath = mode === 'production' 
+    ? '/deploy_github/sistema_admin/' 
+    : '/deploy_github/sistema_admin_qa/'
   
   return {
     plugins: [

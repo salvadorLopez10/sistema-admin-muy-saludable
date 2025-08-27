@@ -33,7 +33,7 @@ jobs:
         username: ${{ secrets.GODADDY_FTP_USERNAME }}
         password: ${{ secrets.GODADDY_FTP_PASSWORD }}
         local-dir: ./dist/
-        server-dir: /public_html/sistema_admin/
+        server-dir: /public_html/muysaludable.com.mx/deploy_github/sistema_admin/
         dangerous-clean-slate: true
         exclude: |
           **/.git*
