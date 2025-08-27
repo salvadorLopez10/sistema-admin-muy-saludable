@@ -33,7 +33,7 @@ jobs:
         protocol: ftps  # FTP explícito sobre TLS
         port: 21
         local-dir: ./dist/
-        server-dir: /public_html/sistema_admin_qa/  # Ruta directa
+        server-dir: sistema_admin_qa/  # Ruta directa
         dangerous-clean-slate: true
         exclude: |
           **/.git*
