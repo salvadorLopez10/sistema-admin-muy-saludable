@@ -12,10 +12,8 @@ import CarruselPage from '../pages/marketing-suite/nutricion/CarruselPage';
 import CarruselRutinasPage from '../pages/marketing-suite/rutinas-ejercicio/CarruselRutinasPage';
 import RutinasVideosPage from '../pages/marketing-suite/rutinas-ejercicio/RutinasVideosPage';
 import SaludFinancieraPage from '../pages/marketing-suite/SaludFinancieraPage';
-import SaludMentalPage from '../pages/marketing-suite/SaludMentalPage';
 import PlanesAlimenticiosPage from '../pages/marketing-suite/PlanesAlimenticiosPage';
-
-
+import SaludMentalPage from '../pages/marketing-suite/SaludMentalPage';
 
 export const AppRoutes = () => {
   const flatRoutes = getFlatRoutes(menuConfig);
@@ -25,51 +23,46 @@ export const AppRoutes = () => {
       {/* Ruta por defecto */}
       <Route path="/" element={<Navigate to="/inicio" replace />} />
       
-      <Route 
-        path="/marketing-suite/planes-alimenticios" 
-        element={<PlanesAlimenticiosPage />} 
-      />
-
+      {/* Rutas específicas */}
       <Route 
         path="/marketing-suite/nutricion/recomendaciones" 
         element={<RecomendacionesPage />} 
       />
-
       <Route 
         path="/marketing-suite/nutricion/carrusel" 
         element={<CarruselPage />} 
       />
-
       <Route 
         path="/marketing-suite/rutinas-ejercicio/carrusel" 
         element={<CarruselRutinasPage />} 
       />
-
       <Route 
         path="/marketing-suite/rutinas-ejercicio/videos" 
         element={<RutinasVideosPage />} 
       />
-
-      <Route 
-        path="/marketing-suite/salud-financiera" 
-        element={<SaludFinancieraPage />} 
-      />
-
       <Route 
         path="/marketing-suite/salud-mental" 
         element={<SaludMentalPage />} 
       />
+      <Route 
+        path="/marketing-suite/salud-financiera" 
+        element={<SaludFinancieraPage />} 
+      />
+      <Route 
+        path="/marketing-suite/planes-alimenticios" 
+        element={<PlanesAlimenticiosPage />} 
+      />
       
       {/* Rutas dinámicas basadas en la configuración del menú */}
       {flatRoutes
-        .filter(route =>
-            route.path !== '/marketing-suite/planes-alimenticios' &&
-            route.path !== '/marketing-suite/nutricion/recomendaciones' &&
-            route.path !== '/marketing-suite/nutricion/carrusel' &&
-            route.path !== '/marketing-suite/rutinas-ejercicio/carrusel' &&
-            route.path !== '/marketing-suite/rutinas-ejercicio/videos' &&
-            route.path !== '/marketing-suite/salud-financiera' &&
-            route.path !== '/marketing-suite/salud-mental'
+        .filter(route => 
+          route.path !== '/marketing-suite/nutricion/recomendaciones' &&
+          route.path !== '/marketing-suite/nutricion/carrusel' &&
+          route.path !== '/marketing-suite/rutinas-ejercicio/carrusel' &&
+          route.path !== '/marketing-suite/rutinas-ejercicio/videos' &&
+          route.path !== '/marketing-suite/salud-mental' &&
+          route.path !== '/marketing-suite/salud-financiera' &&
+          route.path !== '/marketing-suite/planes-alimenticios'
         )
         .map((route) => (
           <Route

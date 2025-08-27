@@ -153,7 +153,7 @@ export const menuConfig: MenuItem[] = [
     title: 'Campañas',
     icon: <MdNotifications />,
     path: '/campañas',
-    spacing: true,
+    //spacing: true,
     level: 1
   }
 ];

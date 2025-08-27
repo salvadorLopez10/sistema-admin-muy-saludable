@@ -1,9 +1,10 @@
 // src/components/Sidebar.tsx
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { BsArrowLeftShort, BsSearch, BsChevronDown, BsList, BsX } from "react-icons/bs";
-import { MdDashboard } from "react-icons/md";
+import { BsArrowLeftShort, BsChevronDown, BsList, BsX } from "react-icons/bs";
+import { MdDashboard, MdLogout } from "react-icons/md";
 import { menuConfig, MenuItem } from "../config/menuConfig";
+import { useAuth } from "../context/AuthContext";
 import logoMuySaludableMR from '../assets/logoMuySaludableMR.png';
 
 interface SidebarProps {
@@ -16,6 +17,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout, user } = useAuth();
   
   const [open, setOpen] = useState<boolean>(true);
   const [submenuOpen, setSubmenuOpen] = useState<Record<string, boolean>>({});
@@ -91,6 +93,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
       toggleSubmenu(item.id);
     } else if (item.path) {
       navigate(item.path);
+      if (isMobile) {
+        setMobileMenuOpen(false);
+      }
+    }
+  };
+
+  // Manejar logout
+  const handleLogout = (): void => {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+      logout();
       if (isMobile) {
         setMobileMenuOpen(false);
       }
@@ -179,108 +191,166 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
- <>
-   {/* Botón hamburguesa para móvil */}
-   {isMobile && (
-     <button
-       className="fixed top-4 left-4 z-50 bg-orange-ms text-white p-2 rounded-md md:hidden hover:bg-orange-600 transition-colors"
-       onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-       aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
-     >
-       {mobileMenuOpen ? <BsX size={24} /> : <BsList size={24} />}
-     </button>
-   )}
-
-   {/* Overlay para móvil */}
-   {isMobile && mobileMenuOpen && (
-     <div 
-       className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
-       onClick={handleOverlayClick}
-       aria-label="Cerrar menú"
-     />
-   )}
-
-   {/* Sidebar - Siempre visible en desktop, solo overlay en móvil */}
-   {!isMobile ? (
-        <div 
-        className={`
-            bg-orange-ms h-screen p-5 pt-8 duration-300 relative overflow-y-auto
-            ${open ? "w-72" : "w-20"}
-        `}
+    <>
+      {/* Botón hamburguesa para móvil */}
+      {isMobile && (
+        <button
+          className="fixed top-4 left-4 z-50 bg-orange-ms text-white p-2 rounded-md md:hidden hover:bg-orange-600 transition-colors"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
         >
-        {/* Botón para colapsar sidebar en desktop */}
-            <BsArrowLeftShort
-                className={`bg-white text-orange-ms text-3xl rounded-full absolute -right-2 top-5 border border-orange-ms cursor-pointer hover:bg--yellow-ms transition-colors z-10 ${!open && "rotate-180"}`}
-                onClick={() => setOpen(!open)}
-                aria-label={open ? "Colapsar sidebar" : "Expandir sidebar"}
-            />
+          {mobileMenuOpen ? <BsX size={24} /> : <BsList size={24} />}
+        </button>
+      )}
 
+      {/* Overlay para móvil */}
+      {isMobile && mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+          onClick={handleOverlayClick}
+          aria-label="Cerrar menú"
+        />
+      )}
+
+      {/* Sidebar - Siempre visible en desktop, solo overlay en móvil */}
+      {!isMobile ? (
+        <div 
+          className={`
+            bg-orange-ms h-screen p-5 pt-8 duration-300 relative overflow-y-auto flex flex-col
+            ${open ? "w-72" : "w-20"}
+          `}
+        >
+          {/* Botón para colapsar sidebar en desktop */}
+          <BsArrowLeftShort
+            className={`bg-white text-orange-500 text-3xl rounded-full absolute -right-3 top-9 border border-orange-500 cursor-pointer hover:bg-gray-100 transition-colors z-10 ${!open && "rotate-180"}`}
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Colapsar sidebar" : "Expandir sidebar"}
+          />
+
+          {/* Logo */}
+          <div className='inline-flex items-center'>
+            <img 
+              src={logoMuySaludableMR}
+              alt="Muy Saludable Logo"
+              className={`w-10 h-10 rounded cursor-pointer block float-left mr-2 duration-500 ${open && "rotate-[360deg]"}`} 
+            />
+            <h1 
+              className={`text-white origin-left font-medium text-2xl duration-200 ${!open && "scale-0"}`}
+            >
+              {title}
+            </h1>
+          </div>
+
+          {/* Información del usuario */}
+          {open && user && (
+            <div className="bg-yellow-ms rounded-lg p-3 mt-4">
+              <p className="text-orange-ms text-sm font-medium">
+                Bienvenido, {user.username}
+              </p>
+              <p className="text-orange-ms text-xs">
+                {user.email}
+              </p>
+            </div>
+          )}
+
+          {/* Barra de búsqueda */}
+          {/* <div className={`flex items-center rounded-md bg-white mt-6 ${!open ? "px-2.5" : "px-4"} py-2`}>
+            <BsSearch className={`text-orange-800 text-lg block float-left cursor-pointer ${open && "mr-2"}`}/>
+            <input 
+              type="search" 
+              placeholder="Search" 
+              className={`text-base bg-transparent w-full text-orange-800 focus:outline-none ${!open && "hidden"}`} 
+              aria-label="Buscar"
+            />
+          </div> */}
+
+          {/* Menú */}
+          <ul className="pt-2 pb-24">
+            {menuConfig.map((item) => renderMenuItem(item))}
+
+            {/* Botón de logout como item del menú */}
+            <div className="border-t border-white pt-4 mt-6">
+              <li 
+                className="text-white text-md flex items-center gap-x-4 cursor-pointer hover:bg-orange-400 rounded-md transition-colors pl-2 p-2"
+                onClick={handleLogout}
+                role="menuitem"
+                tabIndex={0}
+              >
+                <span className="text-2xl block float-left flex-shrink-0">
+                  <MdLogout />
+                </span>
+                <span className={`font-medium flex-1 ${!open && "hidden"}`}>
+                  Cerrar Sesión
+                </span>
+              </li>
+            </div>
+          </ul>
+
+        </div>
+      ) : (
+        mobileMenuOpen && (
+          <div 
+            className="bg-orange-ms h-screen p-5 pt-8 duration-300 relative overflow-y-auto fixed left-0 top-0 z-50 w-72 shadow-lg"
+          >
             {/* Logo */}
             <div className='inline-flex items-center'>
-                 <img 
-                    src={logoMuySaludableMR}
-                    alt="Muy Saludable Logo"
-                    className={`w-10 h-10 rounded cursor-pointer block float-left mr-2 duration-500 ${open && "rotate-[360deg]"}`} 
-                />
-                <h1 
-                    className={`text-white font-avenir-bold origin-left font-medium text-xl duration-200 ${!open && "scale-0"}`}
-                >
-                    {title}
-                </h1>
-            </div>
-
-            {/* Barra de búsqueda */}
-            <div className={`flex items-center rounded-md bg-white mt-6 ${!open ? "px-2.5" : "px-4"} py-2`}>
-                <BsSearch className={`text-orange-ms text-lg block float-left cursor-pointer ${open && "mr-2"}`}/>
-                <input 
-                type="search" 
-                placeholder="Search" 
-                className={`text-base bg-transparent w-full text-orange-ms focus:outline-none ${!open && "hidden"}`} 
-                aria-label="Buscar"
-                />
-            </div>
-
-            {/* Menú */}
-            <ul className="pt-2">
-                {menuConfig.map((item) => renderMenuItem(item))}
-            </ul>
-        </div>
-    
-   ) : (
-     mobileMenuOpen && (
-       <div 
-         className="bg-orange-ms h-screen p-5 pt-8 duration-300 relative overflow-y-auto fixed left-0 top-0 z-50 w-72 shadow-lg"
-       >
-         {/* Logo */}
-         <div className='inline-flex items-center'>
-           <img 
+              <img 
                 src={logoMuySaludableMR}
                 alt="Muy Saludable Logo"
-                className={`w-10 h-10 rounded cursor-pointer block float-left mr-2 duration-500 ${open && "rotate-[360deg]"}`} 
-            />
-           <h1 className="text-white origin-left font-medium text-2xl duration-200">
-             {title}
-           </h1>
-         </div>
+                className="w-10 h-10 rounded cursor-pointer block float-left mr-2 duration-500 rotate-[360deg]" 
+              />
+              <h1 className="text-white origin-left font-medium text-2xl duration-200">
+                {title}
+              </h1>
+            </div>
 
-         {/* Barra de búsqueda */}
-         <div className="flex items-center rounded-md bg-white mt-6 px-4 py-2">
-           <BsSearch className="text-orange-800 text-lg block float-left cursor-pointer mr-2"/>
-           <input 
-             type="search" 
-             placeholder="Search" 
-             className="text-base bg-transparent w-full text-orange-800 focus:outline-none" 
-             aria-label="Buscar"
-           />
-         </div>
+            {/* Información del usuario */}
+            {user && (
+              <div className="bg-yellow-ms rounded-lg p-3 mt-4">
+                <p className="text-orange-ms text-sm font-medium">
+                  Bienvenido, {user.username}
+                </p>
+                <p className="text-orange-ms text-xs">
+                  {user.email}
+                </p>
+              </div>
+            )}
 
-         {/* Menú */}
-         <ul className="pt-2">
-           {menuConfig.map((item) => renderMenuItem(item))}
-         </ul>
-       </div>
-     )
-   )}
- </>
-);
+            {/* Barra de búsqueda */}
+            {/* <div className="flex items-center rounded-md bg-white mt-6 px-4 py-2">
+              <BsSearch className="text-orange-800 text-lg block float-left cursor-pointer mr-2"/>
+              <input 
+                type="search" 
+                placeholder="Search" 
+                className="text-base bg-transparent w-full text-orange-800 focus:outline-none" 
+                aria-label="Buscar"
+              />
+            </div> */}
+
+            {/* Menú */}
+            <ul className="pt-2 pb-20">
+              {menuConfig.map((item) => renderMenuItem(item))}
+              {/* Botón de logout como item del menú */}
+              <div className="border-t border-white pt-4 mt-6">
+                <li 
+                  className="text-white text-md flex items-center gap-x-4 cursor-pointer p-2 rounded-md transition-colors"
+                  onClick={handleLogout}
+                  role="menuitem"
+                  tabIndex={0}
+                >
+                  <span className="text-2xl block float-left flex-shrink-0">
+                    <MdLogout />
+                  </span>
+                  <span className={`font-medium flex-1`}>
+                    Cerrar Sesión
+                  </span>
+                </li>
+              </div>
+            </ul>
+
+          </div>
+        )
+      )}
+    </>
+  );
 };
