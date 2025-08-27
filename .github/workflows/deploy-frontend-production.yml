@@ -1,0 +1,45 @@
+name: Deploy Frontend to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build for production
+      run: npm run build
+      
+    - name: Deploy to GoDaddy Production
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.GODADDY_FTP_HOST }}
+        username: ${{ secrets.GODADDY_FTP_USERNAME }}
+        password: ${{ secrets.GODADDY_FTP_PASSWORD }}
+        local-dir: ./dist/
+        server-dir: /public_html/sistema_admin/
+        dangerous-clean-slate: true
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          .htaccess
+        
+    - name: Deployment Success
+      run: echo "🎉 Production deployed to https://tudominio.com/sistema_admin"
